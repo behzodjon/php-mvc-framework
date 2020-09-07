@@ -1,0 +1,15 @@
+{
+    "name": "behzod/php-mvc-framework",
+    "authors": [
+        {
+            "name": "Behzodjon",
+            "email": "behzodjontuit1998@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4":{
+            "app\\":"./"
+        }
+    },
+    "require": {}
+}
