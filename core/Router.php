@@ -38,11 +38,18 @@ class Router
         }
 
         // retrieves $callback as an object,not string
-        if(is_array($callback)){
-            Application::$app->controller=new $callback[0]();
-            $callback[0]=Application::$app->controller;
+        if (is_array($callback)) {
+            /** @var \app\core\Controller $controller  */
+            $controller = new $callback[0];
+            $controller->action = $callback[1]; //It will be the action in Router:[SmthController::class,'action']
+            Application::$app->controller = $controller;
+            $middlewares = $controller->getMiddlewares();
+            foreach ($middlewares as $middleware) {
+                $middleware->execute();
+            }
+            $callback[0]=$controller;
         }
-        return call_user_func($callback,$this->request);
+        return call_user_func($callback, $this->request, $this->response);
     }
 
     public function renderView($view, $params = [])
@@ -63,7 +70,10 @@ class Router
 
     protected function layoutContent()
     {
-        $layout=Application::$app->controller->layout;
+        $layout = Application::$app->layout;
+        if (Application::$app->controller) {
+            $layout = Application::$app->controller->layout;
+        }
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
         return ob_get_clean();

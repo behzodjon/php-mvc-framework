@@ -2,15 +2,38 @@
 
 namespace app\controllers;
 
-use app\core\Application;
-use app\core\Controller;
+use app\models\Task;
 use app\core\Request;
+use app\core\Controller;
+use app\core\Application;
 
 class SiteController extends Controller
 {
     public function home()
     {
-        return $this->view('home');
+        $tasks=Task::all();
+        // var_dump($tasks);
+        return $this->view('home',['tasks'=>$tasks]);
+    }
+    public function addTask(Request $request)
+    {
+        $task = new Task();
+
+        
+        if ($request->isPost()) {
+            $task->loadData($request->getBody());
+            if ($task->save()) {
+
+                Application::$app->session->setFlash('success', 'Successfuly added!');
+                Application::$app->response->redirect('/');
+                exit;
+            }
+           
+
+            return $this->view('new_task', ['model' => $task]);
+        }
+        $this->setLayout('main');
+        return $this->view('new_task', ['model' => $task]);
     }
     public function handleContact(Request $request)
     {
