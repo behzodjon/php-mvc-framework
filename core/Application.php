@@ -6,7 +6,7 @@ use app\core\Router;
 use app\models\User;
 use app\core\Database;
 use app\core\Response;
-
+use Illuminate\Pagination\Paginator;
 
 class Application
 {
@@ -21,6 +21,7 @@ class Application
     public Database $db;
     public Session $session;
     public ?DbModel $user;
+    // public Paginator $paginator;
 
     public function __construct($rootDir, $config)
     {
@@ -34,6 +35,8 @@ class Application
         $this->router = new Router($this->request, $this->response);
         $this->db = new Database($config['db']);
         $this->session = new Session();
+        // $this->paginator = new Paginator();
+
 
         $userId = Application::$app->session->get('user');
         if ($userId) {

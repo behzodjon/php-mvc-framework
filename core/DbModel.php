@@ -2,6 +2,8 @@
 
 namespace app\core;
 
+use Illuminate\Pagination\Paginator;
+
 abstract class DbModel extends Model
 {
     abstract public static function tableName(): string;
@@ -42,9 +44,10 @@ abstract class DbModel extends Model
     public function all()
     {
         $tableName = static::tableName();
-        $statement = self::prepare("SELECT* FROM $tableName");
+        $statement = self::prepare("SELECT * FROM $tableName");
 
         $statement->execute();
         return $statement->fetchAll();
     }
+   
 }

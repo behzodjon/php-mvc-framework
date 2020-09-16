@@ -12,6 +12,8 @@
         }
     },
     "require": {
-        "vlucas/phpdotenv": "^5.1"
+        "vlucas/phpdotenv": "^5.1",
+        "illuminate/pagination": "^8.2",
+        "jasongrimes/paginator": "~1.0"
     }
 }
